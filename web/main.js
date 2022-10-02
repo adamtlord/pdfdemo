@@ -16,7 +16,9 @@ Alpine.data('numbersForm', () => ({
     zipcode: null
   },
   formMessage: '',
+  fileUrl: null,
   submitForm() {
+    this.isLoading = true;
     this.formMessage = ''
     fetch(SERVICE_URL, {
       method: 'POST',
@@ -28,11 +30,15 @@ Alpine.data('numbersForm', () => ({
     })
       .then((response) => response.json())
       .then((data) => {
+        this.isSubmitted = true;
         this.resetForm()
-        window.open(data.file_url, '_blank')
+        this.fileUrl = data.file_url;
       })
       .catch(() => {
         this.formMessage = 'Something went wrong.'
+      })
+      .finally(() => {
+        this.isLoading = false;
       })
   },
   resetForm() {
@@ -45,6 +51,6 @@ Alpine.data('numbersForm', () => ({
   get isFormComplete() {
     return Object.values(this.formData).every(value => value)
   }
-
 }))
+
 Alpine.start()
