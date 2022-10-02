@@ -1,7 +1,9 @@
+"""Service that provides a REST API endpoint for generating a pdf"""
 import os
+from datetime import datetime
+
 import boto3
 import pdfkit
-from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 from chalice import Chalice, BadRequestError
 from botocore.exceptions import ClientError
@@ -26,7 +28,8 @@ def render_html_template(context):
     """
     env = Environment(
         loader=FileSystemLoader(
-            os.path.join(os.path.dirname(__file__), "templates"), encoding="utf8"
+            os.path.join(os.path.dirname(__file__), "templates"),
+            encoding="utf8"
         )
     )
     template = env.get_template(TEMPLATE_NAME)
@@ -40,8 +43,8 @@ def render_html_template(context):
     except FileNotFoundError:
         pass
 
-    with open(local_filename, "w") as f:
-        f.write(html_string)
+    with open(local_filename, "w") as file_obj:
+        file_obj.write(html_string)
 
     return local_filename
 
@@ -64,16 +67,18 @@ def upload_file_to_s3(filename):
             "get_object", Params={"Bucket": BUCKET, "Key": file_key}
         )
 
-    except ClientError as e:
+    except ClientError as exception_message:
+        print(exception_message)
         file_url = None
 
     return file_url
 
 
-@app.route("/generate", methods=["POST"])
+@app.route("/generate", methods=["POST"], cors=True)
 def generate_pdf():
-    """API endpoint (via Chalice) that takes a POST payload, renders an html template,
-    converts the html to a pdf, uploads the pdf to s3, and returns a public url for the
+    """API endpoint (via Chalice) that takes a POST payload,
+    renders an html template, converts the html to a pdf,
+    uploads the pdf to s3, and returns a public url for the
     generate pdf.
     """
     request = app.current_request

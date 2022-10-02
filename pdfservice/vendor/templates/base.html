@@ -1,9 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
+  <title>PDFDemo Document</title>
+  <style type="text/css">
+    .container {
+      width: min(100% - 3rem, var(--container-max, 60ch));
+      margin-inline: auto;
+    }
+  </style>
 </head>
-<body>
-  <h1>{{my_name}}</h1>
-</body>
+  <body>
+    <div class="container">
+      <h1>{{company_name}}</h1>
+      <h1>{{num_employees}}</h1>
+      <h1>{{revenue}}</h1>
+      <h1>{{lucky_number}}</h1>
+      <h1>{{zipcode}}</h1>
+    </div>
+  </body>
 </html>
