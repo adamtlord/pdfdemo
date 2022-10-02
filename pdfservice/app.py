@@ -74,6 +74,11 @@ def upload_file_to_s3(filename):
     return file_url
 
 
+def format_currency(value):
+    """Takes a string and returns a comma-separated dollar string"""
+    return "${:,.2f}".format(float(value))
+
+
 @app.route("/generate", methods=["POST"], cors=True)
 def generate_pdf():
     """API endpoint (via Chalice) that takes a POST payload,
@@ -84,7 +89,18 @@ def generate_pdf():
     request = app.current_request
     body = request.json_body
 
-    in_file = render_html_template(body)
+    context = {
+        "company_name": body.get("company_name", "(None)"),
+        "num_employees": body.get("num_employees", "n/a"),
+        "revenue": format_currency(body.get("revenue", "0")),
+        "lucky_number": body.get(
+            "lucky_number",
+            "A real man makes his own luck"
+        ),
+        "zipcode": body.get("zipcode", "-----"),
+    }
+
+    in_file = render_html_template(context)
     out_file = in_file.replace(".html", ".pdf")
     config = pdfkit.configuration(wkhtmltopdf="/opt/bin/wkhtmltopdf")
     pdfkit.from_file(in_file, out_file, configuration=config)
