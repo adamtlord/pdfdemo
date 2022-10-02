@@ -1,21 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>PDFDemo Document</title>
   <style type="text/css">
+    html {
+      font-size: 12px;
+    }
+    body {
+      background: #fff !important;
+      color: #222;
+    }
     .container {
-      width: min(100% - 3rem, var(--container-max, 60ch));
+      width: calc(100% - 6rem);
       margin-inline: auto;
+    }
+    .grid {
+      --min: 20ch;
+      --gap: 1rem;
+
+      display: grid;
+      grid-gap: var(--gap);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
+    }
+    .card {
+      padding: 1rem clamp(1rem, 5%, 3rem);
+      border-bottom: 1px solid #777;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card p {
+      color: #444;
+      text-transform: uppercase;
+    }
+    .card h2 {
+      text-align: center;
     }
   </style>
 </head>
-  <body>
-    <div class="container">
-      <h1>{{company_name}}</h1>
-      <h1>{{num_employees}}</h1>
-      <h1>{{revenue}}</h1>
-      <h1>{{lucky_number}}</h1>
-      <h1>{{zipcode}}</h1>
+
+<body>
+  <div class="container">
+    <h1>{{company_name}}</h1>
+    <div class="grid">
+      <div class="card">
+        <p>Number of Employees:</p>
+        <h2>{{num_employees}}</h2>
+      </div>
+      <div class="card">
+        <p>Annual Revenue:</p>
+        <h2>{{revenue}}</h2>
+      </div>
+      <div class="card">
+        <p>Your Lucky Number:</p>
+        <h2>{{lucky_number}}</h2>
+      </div>
+      <div class="card">
+        <p>Zipcode:</p>
+        <h2>{{zipcode}}</h2>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
