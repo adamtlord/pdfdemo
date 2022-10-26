@@ -1,5 +1,5 @@
 # PDF Form Generation Demo
-[https://adamtlord.github.io/pdfdemo/](https://adamtlord.github.io/pdfdemo/)
+
 ## Frontend
 - Vite for dev server and building
 - Tailwind CSS, with some help from Tailwind UI
